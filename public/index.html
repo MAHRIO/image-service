@@ -1,0 +1,67 @@
+<html>
+    <head></head>
+    <style>
+    
+    </style>
+    <body>
+        <div class="camera">
+            <video id="video" autoplay playsinline>Video stream not available.</video>            
+        </div>
+
+        <button onclick="takePic()">Take Pic</button> &nbsp; &nbsp; &nbsp; &nbsp; <button onclick="savePic()">Save Pic</button>
+
+        <div class="picture">
+            <canvas id="pic"></canvas>
+        </div>
+    </body>
+    <script type="text/javascript">
+        let video = document.getElementById('video'),
+            canvas = document.getElementById('pic'),
+            ctx = canvas.getContext('2d');
+
+        video.onplay = () => {
+            canvas.height = video.videoHeight;
+            canvas.width = video.videoWidth;
+        }
+        window.addEventListener("load", () => {
+            navigator.mediaDevices.getUserMedia({ video: true})
+            .then( stream => {
+                video.srcObject = stream;
+                
+            })
+            .catch( err => {
+                alert("An error occurred! " + err);
+            });
+
+            if( localStorage.getItem('img') ) {
+                console.log('here');
+                var img = new Image();
+                img.src = localStorage.getItem('img');
+                img.onload = () => {
+                    ctx.drawImage( img, 0, 0, video.videoWidth, video.videoHeight );
+                }
+            }
+        }, false);
+
+        function takePic() {
+            ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight);
+            localStorage.setItem('img', canvas.toDataURL() );
+        }
+
+        function savePic() {
+            fetch('/upload', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json; charset=utf-8" },
+                body: JSON.stringify({
+                    file: localStorage.getItem('img'),
+                    filename: new Date().toJSON() + '.png',
+                    dataURL: true
+                })
+            }).then( res => {
+                
+            }, err => {
+                
+            });
+        }
+    </script>
+</html>
