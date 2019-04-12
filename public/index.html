@@ -19,9 +19,20 @@
             canvas = document.getElementById('pic'),
             ctx = canvas.getContext('2d');
 
+        let render = () => {
+            if( localStorage.getItem('img') ) {
+                console.log('here');
+                var img = new Image();
+                img.src = localStorage.getItem('img');
+                img.onload = () => {
+                    ctx.drawImage( img, 0, 0, video.videoWidth, video.videoHeight );
+                }
+            }
+        }
         video.onplay = () => {
             canvas.height = video.videoHeight;
             canvas.width = video.videoWidth;
+            render();
         }
         window.addEventListener("load", () => {
             navigator.mediaDevices.getUserMedia({ video: true})
@@ -33,14 +44,7 @@
                 alert("An error occurred! " + err);
             });
 
-            if( localStorage.getItem('img') ) {
-                console.log('here');
-                var img = new Image();
-                img.src = localStorage.getItem('img');
-                img.onload = () => {
-                    ctx.drawImage( img, 0, 0, video.videoWidth, video.videoHeight );
-                }
-            }
+            render();
         }, false);
 
         function takePic() {
