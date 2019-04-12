@@ -11,6 +11,9 @@ const fs = require('fs');
 /* Server Config */
 const config = require('./config');
 config.routes = {
+    cors: {
+        origin: ['*']
+    },
     files: {
         relativeTo: Path.join(__dirname, 'public')
     }

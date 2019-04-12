@@ -40,7 +40,7 @@ server.run().then( server => {
                             console.log(err);
                             rej(err);
                         }
-                        res({success: true});
+                        res({file: payload.filename});
                     });
                 }
             });

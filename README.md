@@ -31,4 +31,7 @@ The response
 
 After a file has been saved you can preview it from the server using:
 
-`https://127.0.0.1:3010/images/filename-desired-with-extension.pmg`
+`https://127.0.0.1:3010/images/filename-desired-with-extension.png`
+
+## Other
+See `public/uploads/postman.png` for alternative method to upload pictures.
